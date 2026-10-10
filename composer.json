@@ -1,0 +1,11 @@
+{
+    "description": "One-click Join and Copy address buttons on every server's console page, set up automatically for Minecraft, Rust, Source games, FiveM, TeamSpeak and Mumble.",
+    "autoload": {
+        "psr-4": {
+            "RustixDev\\ConnectButtons\\": "src/"
+        }
+    },
+    "config": {
+        "autoloader-suffix": "ConnectButtonsExtension"
+    }
+}
