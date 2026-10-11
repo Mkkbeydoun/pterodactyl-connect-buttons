@@ -25,14 +25,14 @@ The egg setting is saved through the normal egg update (`PUT /api/admin/eggs/{eg
 
 ## Install
 
-1. Download `connect-buttons-1.0.0.pteroext` from the release.
+1. Download `connect-buttons-<version>.pteroext` from the [latest release](https://github.com/Mkkbeydoun/pterodactyl-connect-buttons/releases/latest).
 2. In the panel, open **Admin → Extensions**, upload the file and enable it.
 3. Reload the panel.
 
 From a terminal instead:
 
 ```sh
-php artisan p:extension:install /path/to/connect-buttons-1.0.0.pteroext --enable
+php artisan p:extension:install /path/to/connect-buttons-<version>.pteroext --enable
 ```
 
 ## Build from source
@@ -48,6 +48,14 @@ php artisan p:extension:pack /path/to/connect-buttons
 
 ## Uninstall
 
+Remove it under **Admin → Extensions**, or from a terminal:
+
 ```sh
 php artisan p:extension:remove connect-buttons
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
+This is a community extension and is not affiliated with or endorsed by Pterodactyl.
