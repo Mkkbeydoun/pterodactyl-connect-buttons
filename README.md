@@ -25,7 +25,7 @@ The egg setting is saved through the normal egg update (`PUT /api/admin/eggs/{eg
 
 ## Install
 
-1. Download `connect-buttons-<version>.pteroext` from the [latest release](https://github.com/Mkkbeydoun/pterodactyl-connect-buttons/releases/latest).
+1. Download `connect-buttons-<version>.pteroext` from the [latest release](https://github.com/Rustix-Development/pterodactyl-connect-buttons/releases/latest).
 2. In the panel, open **Admin → Extensions**, upload the file and enable it.
 3. Reload the panel.
 
