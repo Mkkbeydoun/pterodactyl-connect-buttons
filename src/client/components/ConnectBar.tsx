@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Check, Copy, Gamepad2 } from 'lucide-react';
-import { toast, type SdkServer as Server } from '@pterodactyl/sdk';
+import { Button, toast, type SdkServer as Server } from '@pterodactyl/sdk';
 import { connectQuery } from '../api';
 
-const BUTTON =
-    'rxcb:inline-flex rxcb:min-h-9 rxcb:items-center rxcb:gap-2 rxcb:rounded-md rxcb:px-3 rxcb:py-1.5 rxcb:text-sm rxcb:font-medium rxcb:no-underline rxcb:transition-colors rxcb:focus-visible:outline-2 rxcb:focus-visible:outline-ring';
+const LABEL = 'rxcb:inline-flex rxcb:items-center rxcb:gap-2';
+
+/** The core primary Button's look, for the Join link (a real link, so it can be copied or opened elsewhere). */
+const PRIMARY_LINK =
+    'rxcb:relative rxcb:inline-block rxcb:rounded-sm rxcb:border rxcb:px-4 rxcb:py-2 rxcb:text-sm rxcb:uppercase rxcb:tracking-wide rxcb:no-underline rxcb:transition-colors rxcb:duration-150 rxcb:border-primary rxcb:bg-primary rxcb:text-primary-foreground rxcb:[&:hover]:border-primary rxcb:[&:hover]:bg-primary/80 rxcb:[&:active]:border-primary/70 rxcb:[&:active]:bg-primary/70';
 
 /** Join and Copy address buttons above the console, with the server's other ports and their notes. */
 export default function ConnectBar({ data: server }: { data: Server }) {
@@ -29,23 +32,27 @@ export default function ConnectBar({ data: server }: { data: Server }) {
     const others = data.ports.filter((port) => !port.is_default);
 
     return (
-        <div className='rxcb:mb-4 rxcb:flex rxcb:flex-wrap rxcb:items-center rxcb:gap-2'>
+        <div className='rxcb:mt-0 rxcb:mb-3 rxcb:flex rxcb:flex-wrap rxcb:items-center rxcb:gap-2'>
             {data.url && (
-                <a href={data.url} className={`${BUTTON} rxcb:bg-primary rxcb:text-primary-foreground rxcb:hover:opacity-90`}>
-                    <Gamepad2 size={16} aria-hidden='true' />
-                    Join server
+                <a href={data.url} className={PRIMARY_LINK}>
+                    <span className={LABEL}>
+                        <Gamepad2 size={16} aria-hidden='true' />
+                        Join server
+                    </span>
                 </a>
             )}
             {data.address && (
-                <button
-                    type='button'
+                <Button
+                    isSecondary
+                    className='rxcb:max-w-full'
                     onClick={() => void copy()}
-                    className={`${BUTTON} rxcb:border rxcb:border-border rxcb:bg-card rxcb:text-card-foreground rxcb:hover:bg-accent rxcb:hover:text-accent-foreground`}
+                    aria-label={copied ? 'Copied' : `Copy address ${data.address}`}
                 >
-                    {copied ? <Check size={16} aria-hidden='true' /> : <Copy size={16} aria-hidden='true' />}
-                    <span className='rxcb:font-mono'>{data.address}</span>
-                    <span className='rxcb:sr-only'>{copied ? 'Copied' : 'Copy address'}</span>
-                </button>
+                    <span className={LABEL}>
+                        {copied ? <Check size={16} aria-hidden='true' /> : <Copy size={16} aria-hidden='true' />}
+                        <span className='rxcb:font-mono rxcb:break-all rxcb:normal-case rxcb:tracking-normal'>{data.address}</span>
+                    </span>
+                </Button>
             )}
             {others.length > 0 && (
                 <ul className='rxcb:m-0 rxcb:flex rxcb:list-none rxcb:flex-wrap rxcb:gap-x-4 rxcb:gap-y-1 rxcb:p-0 rxcb:text-sm rxcb:text-muted-foreground'>
