@@ -35,14 +35,19 @@ final class ConnectPresets
         return 'copy';
     }
 
-    /** The join URL for a type, or null when players can only copy the address. */
-    public static function url(string $type, string $host, int $port, ?string $template): ?string
+    /**
+     * The join URL for a type, or null when players can only copy the address.
+     * Without the port (a domain with an SRV record) the game looks the port up itself;
+     * a custom template still gets {port}.
+     */
+    public static function url(string $type, string $host, int $port, ?string $template, bool $withPort = true): ?string
     {
+        $suffix = $withPort ? ":{$port}" : '';
         $url = match ($type) {
-            'steam' => "steam://connect/{$host}:{$port}",
-            'fivem' => "fivem://connect/{$host}:{$port}",
-            'teamspeak' => "ts3server://{$host}?port={$port}",
-            'mumble' => "mumble://{$host}:{$port}",
+            'steam' => "steam://connect/{$host}{$suffix}",
+            'fivem' => "fivem://connect/{$host}{$suffix}",
+            'teamspeak' => $withPort ? "ts3server://{$host}?port={$port}" : "ts3server://{$host}",
+            'mumble' => "mumble://{$host}{$suffix}",
             'custom' => $template === null ? null : strtr($template, ['{ip}' => rawurlencode($host), '{port}' => (string) $port]),
             default => null,
         };
@@ -50,10 +55,10 @@ final class ConnectPresets
         return $url !== null && self::hasAllowedScheme($url) ? $url : null;
     }
 
-    /** What players paste into the game. Minecraft leaves off its default port. */
-    public static function address(string $type, string $host, int $port): string
+    /** What players paste into the game. Minecraft leaves off its default port, and an SRV record any port. */
+    public static function address(string $type, string $host, int $port, bool $withPort = true): string
     {
-        return $type === 'minecraft' && $port === 25565 ? $host : "{$host}:{$port}";
+        return ! $withPort || ($type === 'minecraft' && $port === 25565) ? $host : "{$host}:{$port}";
     }
 
     public static function hasAllowedScheme(string $url): bool

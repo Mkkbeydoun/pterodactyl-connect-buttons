@@ -7,6 +7,7 @@ use Pterodactyl\Models\Allocation;
 use Pterodactyl\Models\Server;
 use Pterodactyl\Services\Extensions\ExtensionSettings;
 use RustixDev\ConnectButtons\Support\ConnectPresets;
+use RustixDev\ConnectButtons\Support\ServerDomains;
 
 class ConnectController
 {
@@ -23,18 +24,23 @@ class ConnectController
         }
 
         $default = $server->allocation;
-        $host = $default ? ($default->ip_alias ?: $default->ip) : null;
+        $domains = ServerDomains::forServer($server);
+        $domain = $default ? ($domains[$default->id] ?? null) : null;
+
+        $host = $default ? ($domain['name'] ?? ServerDomains::ip($default)) : null;
+        // An SRV record for the game's port means players need only the name.
+        $withPort = ! ($domain !== null && $domain['srv'] && $domain['port'] === $default?->port);
+        $hidden = $type === 'none' || $default === null;
 
         return new JsonResponse([
             'type' => $type,
-            'url' => $type === 'none' || $default === null
-                ? null
-                : ConnectPresets::url($type, $host, $default->port, $fields['template'] ?? null),
-            'address' => $type === 'none' || $default === null ? null : ConnectPresets::address($type, $host, $default->port),
+            'url' => $hidden ? null : ConnectPresets::url($type, $host, $default->port, $fields['template'] ?? null, $withPort),
+            'address' => $hidden ? null : ConnectPresets::address($type, $host, $default->port, $withPort),
+            'domain' => $domain['name'] ?? null,
             'ports' => $server->allocations
                 ->sortBy(fn (Allocation $a) => [$a->id !== $server->allocation_id, $a->port])
                 ->map(fn (Allocation $a) => [
-                    'address' => ($a->ip_alias ?: $a->ip).':'.$a->port,
+                    'address' => ServerDomains::hostFor($a, $default, $domains).':'.$a->port,
                     'notes' => $a->notes,
                     'is_default' => $a->id === $server->allocation_id,
                 ])

@@ -11,6 +11,8 @@ export interface Connect {
     type: string;
     url: string | null;
     address: string | null;
+    /** The Domains extension's name for the primary allocation, when there is one. */
+    domain?: string | null;
     ports: Port[];
 }
 

@@ -2,7 +2,7 @@
     "$schema": "./node_modules/@pterodactyl/sdk/manifest.schema.json",
     "id": "connect-buttons",
     "name": "Connect Buttons",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "One-click Join and Copy address buttons on every server's console page, set up automatically for Minecraft, Rust, Source games, FiveM, TeamSpeak and Mumble.",
     "author": "RustixDev",
     "icon": "gamepad-2",
