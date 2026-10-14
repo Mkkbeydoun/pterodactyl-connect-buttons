@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+- Works with Pterodactyl v2.0.0-beta.1 (SDK beta.6).
+
 ## 1.1.0
 
 - Works with the Domains extension. When the server's main allocation has a working domain, Join and Copy use it instead of the IP. If the domain has an SRV record for the game, the port is left off; otherwise it is shown as domain:port.
