@@ -13,6 +13,6 @@ php artisan p:extension:install /path/to/connect-buttons-${VERSION}.pteroext --e
 - Join and Copy show the server's domain from the Domains extension when it has one, without the port when an SRV record covers the game.
 - The buttons now look like the panel's own buttons and line up with the other extensions above the console.
 
-Requires Pterodactyl Panel 2.0 (2.0-develop or later) and PHP 8.3+. See the README for features and settings.
+Requires Pterodactyl Panel v2.0.0-beta.1 or later and PHP 8.3+. See the README for features and settings.
 
 This is a community extension and is not affiliated with or endorsed by Pterodactyl.
